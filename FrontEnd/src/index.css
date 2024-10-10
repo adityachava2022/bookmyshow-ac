@@ -113,6 +113,9 @@ table th {
 .fs-18 {
   font-size: 18px;
 }
+.d-flex {
+  display: flex;
+}
 .d-none {
   display: none;
 }

@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Input, Button, message } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from "react-redux";
 import { loginUser } from '../api/user';
   
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const onFinish = async (values) => {
     const response = await loginUser(values);
     if (response?.success) {
@@ -15,6 +17,13 @@ const Login = () => {
         message.error(response.message);
     }
   };
+
+  // check If user is already logged in
+  useEffect(() => {
+    if (localStorage.getItem("tokenForBMS")) {
+      navigate("/", { replace: true }); // replace: true to avoid user going back
+    }
+  }, []);
 
   return (
     <header className='App-header'>

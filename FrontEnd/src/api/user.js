@@ -8,7 +8,7 @@ export const registerUser = async (values) => {
     } catch(error) {
         return error;
     }
-}
+};
 
 export const loginUser = async (values) => {
     try {
@@ -17,4 +17,13 @@ export const loginUser = async (values) => {
     } catch(error) {
         return error;
     }
-}
+};
+
+export const getCurrentUser = async () => {
+    try {
+        const response = await axiosInstance.get('/users/getCurrentUser');
+        return response.data;
+    } catch(error) {
+        return error;
+    }
+};

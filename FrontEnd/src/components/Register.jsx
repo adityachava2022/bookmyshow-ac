@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Form, Input, Button, message } from "antd";
 import { Link, useNavigate } from 'react-router-dom';
 import { registerUser } from '../api/user';
@@ -16,6 +16,12 @@ const Register = () => {
     }
   };
 
+  useEffect(() => {
+    if (localStorage.getItem("tokenForBMS")) {
+      navigate("/", { replace: true });
+    }
+  }, []);
+  
   return (
     <header className='App-header'>
         <main className='main-area mw-500 text-center px-3'>
