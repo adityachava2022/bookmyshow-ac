@@ -4,6 +4,7 @@ const connectDB = require('./config/db');
 const cors = require('cors');
 require('dotenv').config();
 const userRoute = require('./routes/userRoute');
+const movieRoute = require('./routes/movieRoute');
 
 // 1. check if db is connected
 connectDB();
@@ -13,6 +14,7 @@ app.use(cors());
 app.use(express.json());
 // 4. for /users, map the handlers
 app.use("/bms/users", userRoute);
+app.use("/bms/movies", movieRoute);
 
 
 const port = process.env.PORT || 8000;
