@@ -43,9 +43,11 @@ const getAllMovies = async (req, res) => {
 
 const updateMovie = async (req, res) => {
   try {
-    const movie = await MovieModel.findByIdAndUpdate(req?.body?.id, req?.body, {
-      new: true,
-    });
+    const movie = await MovieModel.findByIdAndUpdate(
+      req?.body?.movieId,
+      req.body,
+      { new: true }
+    );
     res.send({
       success: true,
       message: "The Movie has been Updated",
@@ -61,7 +63,7 @@ const updateMovie = async (req, res) => {
 
 const deleteMovie = async (req, res) => {
   try {
-    const movieId = req?.params?.id;
+    const movieId = req.params.movieId;
     await MovieModel.findByIdAndDelete(movieId);
     res.send({
       success: true,
