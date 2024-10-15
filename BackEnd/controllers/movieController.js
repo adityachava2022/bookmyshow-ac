@@ -3,13 +3,13 @@ const MovieModel = require("../models/movieSchema");
 const addMovie = async (req, res) => {
   try {
     // check if movie already exists
-    const movieExists = MovieModel.exists({ movieName: req?.body?.movieName });
-    if (movieExists) {
-      return res.send({
-        success: false,
-        message: "Movie already exists",
-      });
-    }
+    // const movieExists = MovieModel.exists({ movieName: req?.body?.movieName });
+    // if (movieExists) {
+    //   return res.send({
+    //     success: false,
+    //     message: "Movie already exists",
+    //   });
+    // }
 
     const newMovie = new MovieModel(req?.body);
     await newMovie.save();

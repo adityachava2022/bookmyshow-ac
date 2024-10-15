@@ -109,6 +109,15 @@ const MovieList = () => {
 
   return (
     <div>
+      <div className="d-flex justify-content-end">
+        <Button
+          onClick={() => {
+            setIsModalOpen(true);
+          }}
+        >
+          Add Movie
+        </Button>
+      </div>
       <Table columns={tableHeadings} dataSource={movies} />
       {/* edit movie form */}
       {isModalOpen && (
