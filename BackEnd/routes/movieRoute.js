@@ -1,6 +1,11 @@
-const router = require('express').Router();
-const { addMovie, getAllMovies, updateMovie, deleteMovie } = require('../controllers/movieController');
-const { validateJWTToken } = require('../middlewares/authorizationMiddleware');
+const router = require("express").Router();
+const {
+  addMovie,
+  getAllMovies,
+  updateMovie,
+  deleteMovie,
+} = require("../controllers/movieController");
+const { validateJWTToken } = require("../middleware/authorizationMiddleware");
 
 router.post("/addMovie", validateJWTToken, addMovie);
 router.get("/getAllMovies", validateJWTToken, getAllMovies);
