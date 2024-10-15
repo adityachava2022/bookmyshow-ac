@@ -93,8 +93,13 @@ const MovieList = () => {
     try {
       dispatch(showLoading());
       const response = await getAllMovies();
-      const allMovies = response?.data;
-      setMovies(allMovies);
+      if (response.success) {
+        setMovies(
+          response.data.map((item) => {
+            return { ...item, key: `movie${item._id}` };
+          })
+        );
+      }
     } catch (error) {
       message.error(error);
     } finally {

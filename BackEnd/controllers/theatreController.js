@@ -68,7 +68,7 @@ const getAllTheatres = async (req, res) => {
 const getAllTheatresByOwner = async (req, res) => {
   try {
     // here the userId is filled while we validate the jwt token
-    const allTheatres = Theatre.find({ owner: req.body.userId });
+    const allTheatres = await Theatre.find({ owner: req.body.userId });
     res.send({
       success: true,
       message: "All theatres fetched successfully!",
