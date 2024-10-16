@@ -1,24 +1,24 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { hideLoading, showLoading } from '../redux/loaderSlice';
-import { Layout, Menu, message } from 'antd';
-import { getCurrentUser } from '../api/user';
-import { setUser } from '../redux/userSlice';
-import { Header } from 'antd/es/layout/layout';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { hideLoading, showLoading } from "../redux/loaderSlice";
+import { Layout, Menu, message } from "antd";
+import { getCurrentUser } from "../api/user";
+import { setUser } from "../redux/userSlice";
+import { Header } from "antd/es/layout/layout";
 import {
-    HomeOutlined,
-    LogoutOutlined,
-    ProfileOutlined,
-    UserOutlined,
-  } from "@ant-design/icons";
+  HomeOutlined,
+  LogoutOutlined,
+  ProfileOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 
 const ProtectedRoute = ({ children }) => {
-   const { user } = useSelector((state) => state.user);
-   const navigate = useNavigate();
-   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-   const navItems = [
+  const navItems = [
     {
       key: "home",
       label: (
@@ -75,39 +75,45 @@ const ProtectedRoute = ({ children }) => {
   // get valid user
   const getValidUser = async () => {
     try {
-        dispatch(showLoading());
-        // api call to get the current user
-        const response = await getCurrentUser();
-        dispatch(setUser(response?.data));
-    } catch( error) {
-        message.error(error);
+      dispatch(showLoading());
+      // api call to get the current user
+      const response = await getCurrentUser();
+      dispatch(setUser(response?.data));
+    } catch (error) {
+      message.error(error);
     } finally {
-        dispatch(hideLoading());
+      dispatch(hideLoading());
     }
   };
 
   useEffect(() => {
-    if (localStorage.getItem('tokenForBMS')) {
-        getValidUser();
+    if (localStorage.getItem("tokenForBMS")) {
+      getValidUser();
     } else {
-        navigate('/login');
+      navigate("/login");
     }
   }, []);
   return (
-    user &&(
+    user && (
       <>
         <Layout>
           <Header
             className="d-flex justify-content-between"
             style={{
-                position: "sticky",
-                top: 0,
-                zIndex: 1,
-                width: "100%",
-                alignItems: "center",
-              }}
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+              width: "100%",
+              alignItems: "center",
+            }}
           >
-            <h3 className="text-white m-0" style={{ color: "white" }}>
+            <h3
+              className="text-white m-0"
+              style={{ color: "white", cursor: "pointer" }}
+              onClick={() => {
+                navigate("/");
+              }}
+            >
               Book My Show
             </h3>
             <Menu theme="dark" mode="horizontal" items={navItems} />
@@ -116,7 +122,7 @@ const ProtectedRoute = ({ children }) => {
         <div>{children}</div>
       </>
     )
-  )
-}
+  );
+};
 
-export default ProtectedRoute
+export default ProtectedRoute;
