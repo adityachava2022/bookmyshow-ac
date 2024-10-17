@@ -92,10 +92,10 @@ const TheatreList = () => {
             </Button>
             {data.isActive && (
               <Button
-              // onClick={() => {
-              //   setIsShowModalOpen(true);
-              //   setSelectedTheatre(data);
-              // }}
+                onClick={() => {
+                  setIsShowModalOpen(true);
+                  setSelectedTheatre(data);
+                }}
               >
                 + Shows
               </Button>
