@@ -4,9 +4,11 @@ const {
   getAllMovies,
   updateMovie,
   deleteMovie,
+  getMovieById,
 } = require("../controllers/movieController");
 const { validateJWTToken } = require("../middleware/authorizationMiddleware");
 
+router.get("/movie/:id", getMovieById);
 router.post("/addMovie", validateJWTToken, addMovie);
 router.get("/getAllMovies", validateJWTToken, getAllMovies);
 router.patch("/updateMovie", validateJWTToken, updateMovie);

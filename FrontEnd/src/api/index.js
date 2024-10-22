@@ -2,7 +2,7 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: "bms",
+  baseURL: "/bms",
   headers: {
     "Content-Type": "application/json",
   },
