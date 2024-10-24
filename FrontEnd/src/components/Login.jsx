@@ -1,20 +1,29 @@
 import React, { useEffect } from "react";
 import { Form, Input, Button, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { loginUser } from "../api/user";
+import { useDispatch } from "react-redux";
+import { hideLoading, showLoading } from "../redux/loaderSlice";
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const onFinish = async (values) => {
-    const response = await loginUser(values);
-    if (response?.success) {
-      localStorage.setItem("tokenForBMS", response?.data);
-      navigate("/");
-      message.success(response.message);
-    } else {
-      message.error(response.message);
+    try {
+      dispatch(showLoading());
+      const response = await loginUser(values);
+      if (response?.success) {
+        localStorage.setItem("tokenForBMS", response?.data);
+        navigate("/");
+        message.success(response.message);
+      } else if (response?.message === "Please enter valid password") {
+        // to do
+        message.error(response?.message);
+      }
+    } catch (error) {
+      message.error(error);
+    } finally {
+      dispatch(hideLoading());
     }
   };
 
@@ -74,6 +83,9 @@ const Login = () => {
         <section>
           <p>
             Not registered yet ? <Link to="/register">Register now</Link>
+          </p>
+          <p>
+            Forgot Password? <Link to="/forget">Click Here</Link>
           </p>
         </section>
       </main>

@@ -69,16 +69,19 @@ const BookShow = () => {
                     <li key={`seat${seatNumber}`}>
                       <button
                         onClick={() => {
-                          // removing the selected seat
-                          if (selectedSeats.includes(seatNumber)) {
-                            setSelectedSeats(
-                              selectedSeats.filter(
-                                (curSeatNumber) => curSeatNumber !== seatNumber
-                              )
-                            );
-                          } else {
-                            // selecting the seat logic
-                            setSelectedSeats([...selectedSeats, seatNumber]);
+                          if (!seatClass.split(" ").includes("booked")) {
+                            // removing the selected seat
+                            if (selectedSeats.includes(seatNumber)) {
+                              setSelectedSeats(
+                                selectedSeats.filter(
+                                  (curSeatNumber) =>
+                                    curSeatNumber !== seatNumber
+                                )
+                              );
+                            } else {
+                              // selecting the seat logic
+                              setSelectedSeats([...selectedSeats, seatNumber]);
+                            }
                           }
                         }}
                         className={seatClass}

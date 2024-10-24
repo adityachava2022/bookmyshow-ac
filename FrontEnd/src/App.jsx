@@ -1,17 +1,19 @@
 import Home from "./components/Home";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import store from "./redux/store";
 import { Provider } from "react-redux";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./pages/Profile";
 import Partner from "./pages/Partner";
 import Admin from "./pages/Admin";
-import { useEffect } from "react";
 import { setupAxiosInterceptors } from "./api";
+import { useEffect } from "react";
 import SingleMovie from "./components/SingleMovie";
 import BookShow from "./components/BookShow";
+import Forget from "./components/Forget";
+import Reset from "./components/Reset";
 
 function App() {
   const navigate = useNavigate();
@@ -74,6 +76,8 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/forget" element={<Forget />} />
+          <Route path="/reset" element={<Reset />} />
         </Routes>
       </Provider>
     </>

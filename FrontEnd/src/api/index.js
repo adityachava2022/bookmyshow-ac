@@ -24,9 +24,12 @@ axiosInstance.interceptors.request.use(
 
 // handles expired token
 const handleExpiredToken = (navigate) => {
-  alert("Your session has expired. Please log in again.");
-  localStorage.removeItem("tokenForBMS");
-  navigate("/login");
+  const path = window.location.pathname;
+  if (path !== "/login" && path !== "/reset" && path !== "/forget") {
+    alert("Your session has expired. Please log in again.");
+    localStorage.removeItem("tokenForBMS");
+    navigate("/login");
+  }
 };
 
 // check for token expiry
