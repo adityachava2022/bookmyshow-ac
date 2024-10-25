@@ -1,4 +1,3 @@
-const router = require("express").Router();
 const {
   addMovie,
   getAllMovies,
@@ -6,12 +5,12 @@ const {
   deleteMovie,
   getMovieById,
 } = require("../controllers/movieController");
-const { validateJWTToken } = require("../middleware/authorizationMiddleware");
 
+const router = require("express").Router();
 router.get("/movie/:id", getMovieById);
-router.post("/addMovie", validateJWTToken, addMovie);
-router.get("/getAllMovies", validateJWTToken, getAllMovies);
-router.patch("/updateMovie", validateJWTToken, updateMovie);
-router.delete("/deleteMovie/:movieId", validateJWTToken, deleteMovie);
+router.post("/addMovie", addMovie);
+router.get("/getAllMovies", getAllMovies);
+router.patch("/updateMovie", updateMovie);
+router.delete("/deleteMovie/:movieId", deleteMovie);
 
 module.exports = router;

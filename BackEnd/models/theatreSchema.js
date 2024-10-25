@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const theatreSchema = mongoose.Schema(
+const theatreSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -20,7 +20,7 @@ const theatreSchema = mongoose.Schema(
     },
     // associating with whom this theatre was created
     owner: {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "users",
     },
     isActive: {
