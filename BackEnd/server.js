@@ -12,6 +12,7 @@ const { validateJWTToken } = require("./middleware/authorizationMiddleware");
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
+const path = require("path");
 
 connectDB();
 
@@ -25,10 +26,10 @@ app.use(helmet());
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'"],
+      defaultSrc: ["'self'", "http:", "https:"],
+      scriptSrc: ["'self'", "http:", "https:"],
       styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", "data:"],
+      imgSrc: ["'self'", "data:", "'http:", "https:"],
       connectSrc: ["'self'"],
       fontSrc: ["'self'", "fonts.gstatic.com"],
       objectSrc: ["'none'"],
@@ -45,6 +46,9 @@ app.use("/bms/movies", validateJWTToken, movieRoute);
 app.use("/bms/theatres", validateJWTToken, theatreRoute);
 app.use("/bms/shows", validateJWTToken, showRoute);
 app.use("/bms/bookings", validateJWTToken, bookingRoute);
+
+const publicPath = path.join(__dirname, "../FrontEnd/dist");
+app.use(express.static(publicPath));
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => {
