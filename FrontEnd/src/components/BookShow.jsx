@@ -7,7 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { message, Card, Row, Col, Button } from "antd";
 import moment from "moment";
 import StripeCheckout from "react-stripe-checkout";
-import { bookShow, makePayment } from "../api/booking";
+import { bookShow, makePayment, makePaymentAndBookShow } from "../api/booking";
 
 const FIXED_COLUMN_SIZE = 12;
 
@@ -98,12 +98,56 @@ const BookShow = () => {
     );
   };
 
-  const book = async (transactionId) => {
+  // const book = async (transactionId) => {
+  //   try {
+  //     dispatch(showLoading());
+  //     const response = await bookShow({
+  //       show: params.id,
+  //       transactionId,
+  //       seats: selectedSeats,
+  //       user: user._id,
+  //     });
+  //     if (response.success) {
+  //       message.success("Show Booking done!");
+  //       navigate("/profile");
+  //     } else {
+  //       message.error(response.message);
+  //     }
+  //   } catch (err) {
+  //     message.error(err.message);
+  //   } finally {
+  //     dispatch(hideLoading());
+  //   }
+  // };
+
+  // const onToken = async (token) => {
+  //   try {
+  //     dispatch(showLoading());
+  //     const response = await makePayment(
+  //       token,
+  //       selectedSeats.length * show.ticketPrice
+  //     );
+  //     if (response.success) {
+  //       message.success(response.message);
+  //       book(response.data);
+  //       console.log(response);
+  //     } else {
+  //       message.error(response.message);
+  //     }
+  //   } catch (err) {
+  //     message.error(err.message);
+  //   } finally {
+  //     dispatch(hideLoading());
+  //   }
+  // };
+
+  const bookAndPay = async (token) => {
     try {
       dispatch(showLoading());
-      const response = await bookShow({
+      const response = await makePaymentAndBookShow({
+        token,
+        amount: selectedSeats.length * show.ticketPrice * 100,
         show: params.id,
-        transactionId,
         seats: selectedSeats,
         user: user._id,
       });
@@ -114,28 +158,7 @@ const BookShow = () => {
         message.error(response.message);
       }
     } catch (err) {
-      message.error(err.message);
-    } finally {
-      dispatch(hideLoading());
-    }
-  };
-
-  const onToken = async (token) => {
-    try {
-      dispatch(showLoading());
-      const response = await makePayment(
-        token,
-        selectedSeats.length * show.ticketPrice
-      );
-      if (response.success) {
-        message.success(response.message);
-        book(response.data);
-        console.log(response);
-      } else {
-        message.error(response.message);
-      }
-    } catch (err) {
-      message.error(err.message);
+      message.error(err);
     } finally {
       dispatch(hideLoading());
     }
@@ -185,7 +208,7 @@ const BookShow = () => {
 
               {selectedSeats.length > 0 && (
                 <StripeCheckout
-                  token={onToken}
+                  token={bookAndPay}
                   amount={selectedSeats.length * show.ticketPrice}
                   billingAddress
                   stripeKey="pk_test_51QClPPGMI6PH9u9vxwUYZx8ohipgbAriwWy9IqjwcuOnQL7UHsMEI8OmWpaBUYkvBo0IbFbWAKdpwcBpCB7CzXCk00YoMr5PD4"

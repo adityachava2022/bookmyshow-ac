@@ -101,7 +101,7 @@ const forgetPassword = async (req, res) => {
         status: false,
         message: "user not found",
       });
-    } else if (user?.otpExpiry != undefined && user.otpExpiry < Date.now()) {
+    } else if (user?.otp != undefined && user.otp < Date.now()) {
       return res.json({
         success: false,
         message: "Please use otp sent on mail",

@@ -41,7 +41,7 @@ const Register = () => {
               label="Name"
               htmlFor="name"
               name="name"
-              className="d-bloc"
+              className="d-block"
               rules={[{ required: true, message: "Name is required" }]}
             >
               <Input

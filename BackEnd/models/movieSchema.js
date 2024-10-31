@@ -19,7 +19,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
   },
   language: {
-    // todo : convert into array to handle movies with multiple languages
+
     type: String,
     required: true,
   },
