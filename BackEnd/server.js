@@ -9,14 +9,37 @@ const theatreRoute = require("./routes/theatreRoute");
 const showRoute = require("./routes/showRoute");
 const bookingRoute = require("./routes/bookingRoute");
 const { validateJWTToken } = require("./middleware/authorizationMiddleware");
+const rateLimit = require("express-rate-limit");
+const helmet = require("helmet");
+const mongoSanitize = require("express-mongo-sanitize");
 
-// 1. check if db is connected
 connectDB();
-// 2. use cors()
+
+const apiLimiter = rateLimit({
+  windowMS: 15 * 60 * 1000,
+  max: 100,
+  message: "Too many requests from this IP, please try again after 15 minutes",
+});
+
+app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "data:"],
+      connectSrc: ["'self'"],
+      fontSrc: ["'self'", "fonts.gstatic.com"],
+      objectSrc: ["'none'"],
+      upgradeInsecureRequests: [],
+    },
+  })
+);
 app.use(cors());
-// 3. use express.json() first as it will check for content-type is json or not
 app.use(express.json());
-// 4. map routes with their route handlers
+app.use(mongoSanitize());
+app.use("/bms", apiLimiter);
 app.use("/bms/users", userRoute);
 app.use("/bms/movies", validateJWTToken, movieRoute);
 app.use("/bms/theatres", validateJWTToken, theatreRoute);
