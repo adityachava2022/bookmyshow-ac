@@ -1,3 +1,3 @@
-const errorHandler = (req, res, next) => {};
+const errorHandler = (err, req, res, next) => {};
 
 module.exports = { errorHandler };

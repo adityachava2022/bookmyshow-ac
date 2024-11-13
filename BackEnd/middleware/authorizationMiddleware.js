@@ -5,7 +5,8 @@ const validateJWTToken = (req, res, next) => {
     const token = req?.headers?.authorization?.split(" ")[1];
     // we will get a decoded token once we verify
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
-    const currentTime = Math.floor(Date.now() / 1000); // this will be in ms
+    // date.now will be in ms so we need to convert it to seconds
+    const currentTime = Math.floor(Date.now() / 1000);
     const expTime = decoded.exp; // this will be in seconds
     if (currentTime > expTime) {
       // the token got expired

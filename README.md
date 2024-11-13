@@ -15,7 +15,7 @@ MONGODB_URL=<mongo_connection_url>
 
 STRIPE_KEY=<stripe_secret_key>
 
-# any random string to use as salt for storing passwords
+# any random string used to sign in the jwt token
 
 SECRET_KEY=<secret_key>
 
@@ -27,7 +27,7 @@ GMAIL_USER=<gmail_email>
 
 GMAIL_APP_PASSWORD=<gmail_app_password>
 
-sample values:
+sample values for environment variables:
 PORT=8000
 MONGODB_URL=mongodb://localhost:27017/bookmyshow
 STRIPE_KEY=sk_test_51QClPPGMI6PH9u9vhCtFysJ466FPfApdwjOvwTGG6ehlYcCI8u2ip3Dpuwss5xEomQLzQwZmENJQfMAkTKcnjSBL005dDoV7Kt

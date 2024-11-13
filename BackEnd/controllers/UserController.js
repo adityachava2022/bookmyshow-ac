@@ -57,7 +57,7 @@ const loginUser = async (req, res) => {
 
     // as soon as validated password, send a token
     const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
-      expiresIn: "1d",
+      expiresIn: process.env.JWT_TOKEN_EXPIRY || "1d",
     });
 
     res.send({

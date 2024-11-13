@@ -13,6 +13,8 @@ const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const path = require("path");
+const swaggerUI = require("swagger-ui-express");
+const swaggerSpec = require("./config/swagger");
 
 connectDB();
 
@@ -46,6 +48,7 @@ app.use("/bms/movies", validateJWTToken, movieRoute);
 app.use("/bms/theatres", validateJWTToken, theatreRoute);
 app.use("/bms/shows", validateJWTToken, showRoute);
 app.use("/bms/bookings", validateJWTToken, bookingRoute);
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 const publicPath = path.join(__dirname, "../FrontEnd/dist");
 app.use(express.static(publicPath));
