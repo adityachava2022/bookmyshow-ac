@@ -60,6 +60,11 @@ const loginUser = async (req, res) => {
       expiresIn: process.env.JWT_TOKEN_EXPIRY || "1d",
     });
 
+    res.cookie("tokenForBMS", token, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    });
+
     res.send({
       success: true,
       message: "You've Successfully Logged In",
@@ -68,6 +73,16 @@ const loginUser = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+const authCheck = (req, res) => {
+  const token = req.cookies.tokenForBMS;
+  if (!token) {
+    return res.status(401).json({ authenticated: false });
+  }
+  try {
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+  } catch (err) {}
 };
 
 const currentUser = async (req, res) => {

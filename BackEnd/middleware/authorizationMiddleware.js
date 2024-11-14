@@ -2,7 +2,13 @@ const jwt = require("jsonwebtoken");
 
 const validateJWTToken = (req, res, next) => {
   try {
-    const token = req?.headers?.authorization?.split(" ")[1];
+    // const token = req?.headers?.authorization?.split(" ")[1];
+    const token = req.cookies.tokenForBMS;
+    if (!token) {
+      return res
+        .status(401)
+        .send({ success: false, message: "Token not found" });
+    }
     // we will get a decoded token once we verify
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
     // date.now will be in ms so we need to convert it to seconds

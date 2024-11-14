@@ -6,28 +6,29 @@ export const axiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true,
 });
 
-// attaches the bmstoken before each request
-axiosInstance.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("tokenForBMS");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+// // attaches the bmstoken before each request
+// axiosInstance.interceptors.request.use(
+//   (config) => {
+//     const token = localStorage.getItem("tokenForBMS");
+//     if (token) {
+//       config.headers.Authorization = `Bearer ${token}`;
+//     }
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );
 
 // handles expired token
 const handleExpiredToken = (navigate) => {
   const path = window.location.pathname;
   if (path !== "/login" && path !== "/reset" && path !== "/forget") {
     alert("Your session has expired. Please log in again.");
-    localStorage.removeItem("tokenForBMS");
+    // localStorage.removeItem("tokenForBMS");
     navigate("/login");
   }
 };
