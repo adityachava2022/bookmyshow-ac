@@ -45,6 +45,8 @@ const MovieForm = ({
         // performing refresh here to get updated information
         getData();
         setIsModalOpen(false);
+      } else {
+        message.warning(response.message);
       }
     } catch (error) {
       message.error(error);
