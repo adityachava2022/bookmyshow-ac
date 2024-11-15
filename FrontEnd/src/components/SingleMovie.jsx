@@ -5,7 +5,7 @@ import { hideLoading, showLoading } from "../redux/loaderSlice";
 import { useDispatch } from "react-redux";
 import { message, Input, Divider, Row, Col } from "antd";
 import { CalendarOutlined } from "@ant-design/icons";
-import moment from "moment";
+import { DateTime } from "luxon";
 import { getAllTheatresByMovie } from "../api/show";
 
 const SingleMovie = () => {
@@ -15,7 +15,7 @@ const SingleMovie = () => {
 
   const [movie, setMovie] = useState();
   const [theatres, setTheatres] = useState([]);
-  const [date, setDate] = useState(moment().format("YYYY-MM-DD"));
+  const [date, setDate] = useState(DateTime.now().toFormat("yyyy-MM-dd"));
 
   const getData = async () => {
     try {
@@ -50,7 +50,7 @@ const SingleMovie = () => {
   };
 
   const handleDate = (e) => {
-    setDate(moment(e.target.value).format("YYYY-MM-DD"));
+    setDate(DateTime.fromISO(e.target.value).toFormat("yyyy-MM-dd"));
     navigate(`/movie/${params.id}?date=${e.target.value}`);
   };
   useEffect(() => {
@@ -77,7 +77,9 @@ const SingleMovie = () => {
             </p>
             <p className="movie-data">
               Release Date:
-              <span>{moment(movie.date).format("MMM Do YYYY")}</span>
+              <span>
+                {DateTime.fromISO(movie.date).toFormat("MMM dd yyyy")}
+              </span>
             </p>
             <p className="movie-data">
               Duration: <span>{movie.duration} Minutes</span>
@@ -88,7 +90,7 @@ const SingleMovie = () => {
               <Input
                 onChange={handleDate}
                 type="date"
-                min={moment().format("YYYY-MM-DD")}
+                min={DateTime.now().toFormat("yyyy-MM-dd")}
                 className="max-width-300 mt-8px-mob"
                 value={date}
                 placeholder="default size"
@@ -121,7 +123,8 @@ const SingleMovie = () => {
                       {theatre.shows
                         .sort(
                           (a, b) =>
-                            moment(a.time, "HH:mm") - moment(b.time, "HH:mm")
+                            DateTime.fromFormat(a.time, "HH:mm") -
+                            DateTime.fromFormat(b.time, "HH:mm")
                         )
                         .map((singleShow) => {
                           return (
@@ -131,9 +134,10 @@ const SingleMovie = () => {
                                 navigate(`/book-show/${singleShow._id}`)
                               }
                             >
-                              {moment(singleShow.time, "HH:mm").format(
-                                "hh:mm A"
-                              )}
+                              {DateTime.fromFormat(
+                                singleShow.time,
+                                "HH:mm"
+                              ).toFormat("hh:mm a")}
                             </li>
                           );
                         })}

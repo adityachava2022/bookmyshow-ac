@@ -5,8 +5,8 @@ import { hideLoading, showLoading } from "../redux/loaderSlice";
 import { getShowById } from "../api/show";
 import { useNavigate, useParams } from "react-router-dom";
 import { message, Card, Row, Col, Button } from "antd";
-import moment from "moment";
 import StripeCheckout from "react-stripe-checkout";
+import { DateTime } from "luxon";
 import { bookShow, makePayment, makePaymentAndBookShow } from "../api/booking";
 
 const FIXED_COLUMN_SIZE = 12;
@@ -189,8 +189,10 @@ const BookShow = () => {
                   </h3>
                   <h3>
                     <span>Date & Time: </span>
-                    {moment(show.date).format("MMM Do YYYY")} at
-                    {moment(show.time, "HH:mm").format("hh:mm A")}
+                    {DateTime.fromISO(show.date).toFormat("MMM dd yyyy")} at
+                    {DateTime.fromFormat(show.time, "HH:mm").toFormat(
+                      "hh:mm a"
+                    )}
                   </h3>
                   <h3>
                     <span>Ticket Price:</span> Rs. {show.ticketPrice}/-

@@ -4,7 +4,7 @@ import { hideLoading, showLoading } from "../../redux/loaderSlice";
 import { getAllMovies } from "../../api/movie";
 import React, { useEffect, useState } from "react";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import moment from "moment";
+import { DateTime } from "luxon";
 import MovieForm from "./MovieForm";
 import DeleteMovieModal from "./DeleteMovieModal";
 
@@ -58,7 +58,7 @@ const MovieList = () => {
       title: "Release Date",
       dataIndex: "releaseDate",
       render: (text, data) => {
-        return moment(data.releaseDate).format("MM-DD-YYYY");
+        return DateTime.fromISO(data.releaseDate).toFormat("MM-dd-yyyy");
       },
     },
     {
