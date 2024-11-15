@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { hideLoading, showLoading } from "../redux/loaderSlice";
 import { Layout, Menu, message } from "antd";
-import { getCurrentUser } from "../api/user";
+import { getCurrentUser, logoutUser } from "../api/user";
 import { setUser } from "../redux/userSlice";
 import { Header } from "antd/es/layout/layout";
 import {
@@ -61,7 +61,8 @@ const ProtectedRoute = ({ children }) => {
             <Link
               to="/login"
               onClick={() => {
-                localStorage.removeItem("tokenForBMS");
+                sessionStorage.removeItem("isUserAuthenticated");
+                logout();
               }}
             >
               Log out
@@ -72,6 +73,20 @@ const ProtectedRoute = ({ children }) => {
       ],
     },
   ];
+
+  // logout
+  const logout = async () => {
+    try {
+      dispatch(showLoading());
+      // api call to logout user
+      await logoutUser();
+    } catch (error) {
+      message.error(error);
+    } finally {
+      dispatch(hideLoading());
+    }
+  };
+
   // get valid user
   const getValidUser = async () => {
     try {
@@ -87,7 +102,7 @@ const ProtectedRoute = ({ children }) => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("tokenForBMS")) {
+    if (sessionStorage.getItem("isUserAuthenticated")) {
       getValidUser();
     } else {
       navigate("/login");

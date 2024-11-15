@@ -6,7 +6,7 @@ import { Button, Form, Input, message } from "antd";
 const Forget = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    if (localStorage.getItem("tokenForBMS")) {
+    if (sessionStorage.getItem("isUserAuthenticated")) {
       navigate("/");
     }
   }, []);

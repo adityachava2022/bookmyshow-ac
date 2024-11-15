@@ -18,6 +18,15 @@ export const loginUser = async (values) => {
   }
 };
 
+export const logoutUser = async () => {
+  try {
+    const response = await axiosInstance.get("/users/logout");
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const getCurrentUser = async () => {
   try {
     const response = await axiosInstance.get("/users/getCurrentUser");

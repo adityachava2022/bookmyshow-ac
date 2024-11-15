@@ -24,7 +24,7 @@ const Register = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("tokenForBMS")) {
+    if (sessionStorage.getItem("isUserAuthenticated")) {
       navigate("/", { replace: true });
     }
   }, []);

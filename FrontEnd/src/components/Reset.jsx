@@ -21,7 +21,7 @@ function Reset() {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("tokenForBMS")) {
+    if (sessionStorage.getItem("isUserAuthenticated")) {
       navigate("/");
     }
   }, []);

@@ -75,16 +75,6 @@ const loginUser = async (req, res) => {
   }
 };
 
-const authCheck = (req, res) => {
-  const token = req.cookies.tokenForBMS;
-  if (!token) {
-    return res.status(401).json({ authenticated: false });
-  }
-  try {
-    const decoded = jwt.verify(token, process.env.SECRET_KEY);
-  } catch (err) {}
-};
-
 const currentUser = async (req, res) => {
   try {
     const user = await userModel.findById(req.body.userId).select("-password");
@@ -182,10 +172,20 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const logoutUser = (req, res) => {
+  res.cookie("tokenForBMS", "", {
+    httpOnly: true,
+    maxAge: 0,
+    path: "/",
+  });
+  res.status(200).json({ message: "Logged out successfully" });
+};
+
 module.exports = {
   registerUser,
   loginUser,
   currentUser,
   forgetPassword,
   resetPassword,
+  logoutUser,
 };

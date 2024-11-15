@@ -2,8 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const validateJWTToken = (req, res, next) => {
   try {
-    // const token = req?.headers?.authorization?.split(" ")[1];
-    const token = req.cookies.tokenForBMS;
+    const token = req.cookies?.tokenForBMS;
     if (!token) {
       return res
         .status(401)
@@ -16,7 +15,7 @@ const validateJWTToken = (req, res, next) => {
     const expTime = decoded.exp; // this will be in seconds
     if (currentTime > expTime) {
       // the token got expired
-      res.status(401).send({ success: false, message: "Expired Token" });
+      return res.status(401).send({ success: false, message: "Expired Token" });
     }
     // if within the time limit, assign userId form decoded token info
     req.body.userId = decoded?.userId;

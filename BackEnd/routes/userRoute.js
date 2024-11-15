@@ -5,7 +5,9 @@ const {
   currentUser,
   forgetPassword,
   resetPassword,
+  logoutUser,
 } = require("../controllers/UserController");
+const { validateJWTToken } = require("../middleware/authorizationMiddleware");
 
 /**
  * @swagger
@@ -105,7 +107,7 @@ router.post("/login", loginUser);
  *       401:
  *         description: Unauthorized (JWT token is missing or invalid)
  */
-router.get("/getCurrentUser", currentUser); // No JWT here
+router.get("/getCurrentUser", validateJWTToken, currentUser);
 
 /**
  * @swagger
@@ -159,5 +161,18 @@ router.post("/forgetPassword", forgetPassword);
  *         description: Invalid or expired token
  */
 router.post("/resetPassword", resetPassword);
+
+/**
+ * @swagger
+ * /logout:
+ *   get:
+ *     summary: Logout an existing user
+ *     tags: [User]
+ *     description: Use this route to logout the currently authenticated user.
+ *     responses:
+ *       200:
+ *         description: Successfully logout the user
+ */
+router.get("/logout", logoutUser);
 
 module.exports = router;

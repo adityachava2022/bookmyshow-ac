@@ -13,7 +13,7 @@ const Login = () => {
       dispatch(showLoading());
       const response = await loginUser(values);
       if (response?.success) {
-        localStorage.setItem("tokenForBMS", response?.data);
+        sessionStorage.setItem("isUserAuthenticated", true);
         navigate("/");
         message.success(response.message);
       } else if (response?.message === "Please enter valid password") {
@@ -29,7 +29,7 @@ const Login = () => {
 
   // check If user is already logged in
   useEffect(() => {
-    if (localStorage.getItem("tokenForBMS")) {
+    if (localStorage.getItem("isUserAuthenticated")) {
       navigate("/", { replace: true }); // replace: true to avoid user going back
     }
   }, []);
