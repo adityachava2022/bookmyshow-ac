@@ -79,7 +79,7 @@ const Register = () => {
               ></Input>
             </Form.Item>
             <Form.Item
-              label="Register as a Partner"
+              label="Role"
               htmlFor="role"
               name="role"
               className="d-block text-center"
@@ -88,8 +88,9 @@ const Register = () => {
             >
               <div className="d-flex justify-content-start">
                 <Radio.Group name="radiogroup" className="flex-start">
-                  <Radio value={"partner"}>Yes</Radio>
-                  <Radio value={"user"}>No</Radio>
+                  <Radio value={"admin"}>Admin</Radio>
+                  <Radio value={"partner"}>Partner</Radio>
+                  <Radio value={"user"}>User</Radio>
                 </Radio.Group>
               </div>
             </Form.Item>

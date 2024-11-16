@@ -27,10 +27,15 @@ GMAIL_USER=<gmail_email>
 
 GMAIL_APP_PASSWORD=<gmail_app_password>
 
+# jwt token expiry
+
+JWT_TOKEN_EXPIRY=1d
+
 sample values for environment variables:
 PORT=8000
-MONGODB_URL=mongodb://localhost:27017/bookmyshow
+MONGODB_URL=mongodb+srv://adityachava1:TjP4kkFXe6LzJNvw@cluster0bms.6ij8a.mongodb.net/bookmyshow?retryWrites=true&w=majority&appName=cluster0bms
 STRIPE_KEY=sk_test_51QClPPGMI6PH9u9vhCtFysJ466FPfApdwjOvwTGG6ehlYcCI8u2ip3Dpuwss5xEomQLzQwZmENJQfMAkTKcnjSBL005dDoV7Kt
 SECRET_KEY=bookmyshow
 GMAIL_USER=aditya.chava.93@gmail.com
 GMAIL_APP_PASSWORD=whaf rygv bdlw aaeg
+JWT_TOKEN_EXPIRY=1d
