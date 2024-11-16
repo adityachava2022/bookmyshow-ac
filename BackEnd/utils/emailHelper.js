@@ -31,7 +31,7 @@ async function EmailHelper(templateName, receiverEmail, creds) {
     };
     await transport.sendMail(emailDetails);
     console.log("email sent");
-  } catch (err) {
+  } catch (error) {
     if (err.code === "ENOENT") {
       console.error("Template file not found:", err.message);
     } else if (err.response && err.response.body) {

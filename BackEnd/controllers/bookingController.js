@@ -4,7 +4,7 @@ const Show = require("../models/showSchema");
 const EmailHelper = require("../utils/emailHelper");
 const mongoose = require("mongoose");
 
-const makePayment = async (req, res) => {
+const makePayment = async (req, res, next) => {
   try {
     // create a customer
     const { token, amount } = req.body;
@@ -44,14 +44,11 @@ const makePayment = async (req, res) => {
       data: transactionId,
     });
   } catch (error) {
-    res.send({
-      success: false,
-      message: error.message,
-    });
+    next(error);
   }
 };
 
-const bookShow = async (req, res) => {
+const bookShow = async (req, res, next) => {
   try {
     // create a new booking
     const newBooking = new Booking(req.body);
@@ -97,15 +94,12 @@ const bookShow = async (req, res) => {
       message: "New Booking done!",
       data: newBooking,
     });
-  } catch (err) {
-    res.send({
-      success: false,
-      message: err.message,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
-const getAllBookings = async (req, res) => {
+const getAllBookings = async (req, res, next) => {
   try {
     const bookings = await Booking.find({ user: req.body.userId })
       .populate("user")
@@ -130,15 +124,12 @@ const getAllBookings = async (req, res) => {
       message: "Bookings fetched!",
       data: bookings,
     });
-  } catch (err) {
-    res.send({
-      success: false,
-      message: err.message,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
-const makePaymentAndBookShow = async (req, res) => {
+const makePaymentAndBookShow = async (req, res, next) => {
   const session = await mongoose.startSession();
   session.startTransaction();
   let paymentIntent;
@@ -225,18 +216,15 @@ const makePaymentAndBookShow = async (req, res) => {
       amount: populatedBooking.seats.length * populatedBooking.show.ticketPrice,
       transactionId: populatedBooking.transactionId,
     });
-  } catch (err) {
+  } catch (error) {
     await session.abortTransaction();
     session.endSession();
 
-    if (err.message.includes("One or more seats are already booked.")) {
+    if (error.message.includes("One or more seats are already booked.")) {
       // start the refund process;
       await stripe.refunds.create({ payment_intent: paymentIntent.id });
     }
-    res.send({
-      success: false,
-      message: err.message,
-    });
+    next(error);
   }
 };
 

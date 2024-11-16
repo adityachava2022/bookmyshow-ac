@@ -1,6 +1,6 @@
 const Theatre = require("../models/theatreSchema");
 
-const addTheatre = async (req, res) => {
+const addTheatre = async (req, res, next) => {
   try {
     const newTheatre = new Theatre(req.body);
     await newTheatre.save();
@@ -8,15 +8,12 @@ const addTheatre = async (req, res) => {
       success: true,
       message: "New theatre has been added!",
     });
-  } catch (err) {
-    res.send({
-      success: false,
-      message: err.message,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
-const updateTheatre = async (req, res) => {
+const updateTheatre = async (req, res, next) => {
   try {
     await Theatre.findByIdAndUpdate(req.body.theatreId, req.body, {
       new: true,
@@ -25,15 +22,12 @@ const updateTheatre = async (req, res) => {
       success: true,
       message: "Theatre has been updated!",
     });
-  } catch (err) {
-    res.send({
-      success: false,
-      message: err.message,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
-const deleteTheatre = async (req, res) => {
+const deleteTheatre = async (req, res, next) => {
   try {
     const theatreId = req.params.theatreId;
     await Theatre.findByIdAndDelete(theatreId);
@@ -41,15 +35,12 @@ const deleteTheatre = async (req, res) => {
       success: true,
       message: "The theatre has been deleted!",
     });
-  } catch (err) {
-    res.send({
-      success: false,
-      message: err.message,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
-const getAllTheatres = async (req, res) => {
+const getAllTheatres = async (req, res, next) => {
   try {
     const allTheatres = await Theatre.find().populate("owner");
     res.send({
@@ -57,15 +48,12 @@ const getAllTheatres = async (req, res) => {
       message: "All Theatres Fetched !",
       data: allTheatres,
     });
-  } catch (err) {
-    res.send({
-      success: false,
-      message: err.message,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
-const getAllTheatresByOwner = async (req, res) => {
+const getAllTheatresByOwner = async (req, res, next) => {
   try {
     // here the userId is filled while we validate the jwt token
     const allTheatres = await Theatre.find({ owner: req.body.userId });
@@ -74,11 +62,8 @@ const getAllTheatresByOwner = async (req, res) => {
       message: "All theatres fetched successfully!",
       data: allTheatres,
     });
-  } catch (err) {
-    res.send({
-      success: false,
-      message: err.message,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 

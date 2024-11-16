@@ -9,6 +9,7 @@ const theatreRoute = require("./routes/theatreRoute");
 const showRoute = require("./routes/showRoute");
 const bookingRoute = require("./routes/bookingRoute");
 const { validateJWTToken } = require("./middleware/authorizationMiddleware");
+const errorHandler = require("./middleware/errorHandlerMiddleware");
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
@@ -51,6 +52,7 @@ app.use("/bms/theatres", validateJWTToken, theatreRoute);
 app.use("/bms/shows", validateJWTToken, showRoute);
 app.use("/bms/bookings", validateJWTToken, bookingRoute);
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
+app.use(errorHandler);
 
 const publicPath = path.join(__dirname, "../FrontEnd/dist");
 app.use(express.static(publicPath));

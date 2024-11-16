@@ -17,7 +17,6 @@ const Login = () => {
         navigate("/");
         message.success(response.message);
       } else if (response?.message === "Please enter valid password") {
-        // to do
         message.error(response?.message);
       }
     } catch (error) {

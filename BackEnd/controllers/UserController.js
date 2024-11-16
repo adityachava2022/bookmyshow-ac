@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const EmailHelper = require("../utils/emailHelper");
 
-const registerUser = async (req, res) => {
+const registerUser = async (req, res, next) => {
   try {
     const userExists = await userModel.findOne({ email: req?.body?.email });
 
@@ -28,11 +28,11 @@ const registerUser = async (req, res) => {
       message: "Registration Successfull, Please Login",
     });
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
-const loginUser = async (req, res) => {
+const loginUser = async (req, res, next) => {
   try {
     const user = await userModel.findOne({ email: req?.body?.email });
 
@@ -71,11 +71,11 @@ const loginUser = async (req, res) => {
       data: token,
     });
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
-const currentUser = async (req, res) => {
+const currentUser = async (req, res, next) => {
   try {
     const user = await userModel.findById(req.body.userId).select("-password");
     res.send({
@@ -84,14 +84,11 @@ const currentUser = async (req, res) => {
       data: user,
     });
   } catch (error) {
-    res.send({
-      success: false,
-      message: error.message,
-    });
+    next(error);
   }
 };
 
-const forgetPassword = async (req, res) => {
+const forgetPassword = async (req, res, next) => {
   try {
     const { email } = req.body;
     if (email == undefined) {
@@ -125,14 +122,11 @@ const forgetPassword = async (req, res) => {
       message: "otp has been sent",
     });
   } catch (error) {
-    res.send({
-      success: false,
-      message: error.message,
-    });
+    next(error);
   }
 };
 
-const resetPassword = async (req, res) => {
+const resetPassword = async (req, res, next) => {
   try {
     const { password, otp } = req.body;
     if (password == undefined || otp == undefined) {
@@ -165,20 +159,21 @@ const resetPassword = async (req, res) => {
       message: "password reset successfully",
     });
   } catch (error) {
-    res.send({
-      success: false,
-      message: error.message,
-    });
+    next(error);
   }
 };
 
 const logoutUser = (req, res) => {
-  res.cookie("tokenForBMS", "", {
-    httpOnly: true,
-    maxAge: 0,
-    path: "/",
-  });
-  res.status(200).json({ message: "Logged out successfully" });
+  try {
+    res.cookie("tokenForBMS", "", {
+      httpOnly: true,
+      maxAge: 0,
+      path: "/",
+    });
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    next(error);
+  }
 };
 
 module.exports = {

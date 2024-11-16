@@ -1,6 +1,6 @@
 const Show = require("../models/showSchema");
 
-const addShow = async (req, res) => {
+const addShow = async (req, res, next) => {
   try {
     const newShow = new Show(req.body);
     await newShow.save();
@@ -8,15 +8,12 @@ const addShow = async (req, res) => {
       success: true,
       message: "New show has been added!",
     });
-  } catch (err) {
-    res.send({
-      status: false,
-      message: err.message,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
-const deleteShow = async (req, res) => {
+const deleteShow = async (req, res, next) => {
   try {
     const showId = req.params.showId;
     await Show.findByIdAndDelete(showId);
@@ -24,30 +21,24 @@ const deleteShow = async (req, res) => {
       success: true,
       message: "The show has been deleted!",
     });
-  } catch (err) {
-    res.send({
-      status: false,
-      message: err.message,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
-const updateShow = async (req, res) => {
+const updateShow = async (req, res, next) => {
   try {
     await Show.findByIdAndUpdate(req.body.showId, req.body);
     res.send({
       success: true,
       message: "The show has been updated!",
     });
-  } catch (err) {
-    res.send({
-      success: false,
-      message: err.message,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
-const getAllShowsByTheatre = async (req, res) => {
+const getAllShowsByTheatre = async (req, res, next) => {
   try {
     const shows = await Show.find({ theatre: req.body.theatreId }).populate(
       "movie"
@@ -57,16 +48,13 @@ const getAllShowsByTheatre = async (req, res) => {
       message: "All shows are fetched",
       data: shows,
     });
-  } catch (err) {
-    res.send({
-      success: false,
-      message: err.message,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
 // url : /movies/{movieId}?date={date}
-const getAllTheatersByMovie = async (req, res) => {
+const getAllTheatersByMovie = async (req, res, next) => {
   try {
     const { movie, date } = req.body;
     // get all shows by movie and date and populate the theatres
@@ -96,15 +84,12 @@ const getAllTheatersByMovie = async (req, res) => {
       message: "All Theatres are fetched",
       data: uniqueTheatre,
     });
-  } catch (err) {
-    res.send({
-      success: false,
-      message: err.message,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
-const getShowsById = async (req, res) => {
+const getShowsById = async (req, res, next) => {
   try {
     const shows = await Show.findById(req.body.showId)
       .populate("movie")
@@ -114,11 +99,8 @@ const getShowsById = async (req, res) => {
       message: "All shows are fetched",
       data: shows,
     });
-  } catch (err) {
-    res.send({
-      success: false,
-      message: err.message,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 

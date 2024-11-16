@@ -1,6 +1,6 @@
 const MovieModel = require("../models/movieSchema");
 
-const addMovie = async (req, res) => {
+const addMovie = async (req, res, next) => {
   try {
     // check if movie already exists
     const movieExists = await MovieModel.exists({
@@ -20,14 +20,11 @@ const addMovie = async (req, res) => {
       message: "New Movie has been Added",
     });
   } catch (error) {
-    return res.send({
-      success: false,
-      message: error.message,
-    });
+    next(error);
   }
 };
 
-const getAllMovies = async (req, res) => {
+const getAllMovies = async (req, res, next) => {
   try {
     const allMovies = await MovieModel.find();
     res.send({
@@ -36,14 +33,11 @@ const getAllMovies = async (req, res) => {
       data: allMovies,
     });
   } catch (error) {
-    res.send({
-      success: false,
-      message: error.message,
-    });
+    next(error);
   }
 };
 
-const updateMovie = async (req, res) => {
+const updateMovie = async (req, res, next) => {
   try {
     const movie = await MovieModel.findByIdAndUpdate(
       req?.body?.movieId,
@@ -56,14 +50,11 @@ const updateMovie = async (req, res) => {
       data: movie,
     });
   } catch (error) {
-    res.send({
-      success: false,
-      message: error.message,
-    });
+    next(error);
   }
 };
 
-const deleteMovie = async (req, res) => {
+const deleteMovie = async (req, res, next) => {
   try {
     const movieId = req.params.movieId;
     await MovieModel.findByIdAndDelete(movieId);
@@ -72,14 +63,11 @@ const deleteMovie = async (req, res) => {
       message: "The Movie has been deleted",
     });
   } catch (error) {
-    res.send({
-      success: false,
-      message: error.message,
-    });
+    next(error);
   }
 };
 
-const getMovieById = async (req, res) => {
+const getMovieById = async (req, res, next) => {
   try {
     const movie = await MovieModel.findById(req.params.id);
     res.send({
@@ -87,11 +75,8 @@ const getMovieById = async (req, res) => {
       message: "Movie fetched successfully!",
       data: movie,
     });
-  } catch (err) {
-    res.send({
-      success: false,
-      message: err.message,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 

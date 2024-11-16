@@ -15,6 +15,8 @@ const Register = () => {
       if (response?.success) {
         message.success(response?.message);
         navigate("/login");
+      } else {
+        message.error(response.message);
       }
     } catch (error) {
       message.error(error);
