@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getMovieById } from "../api/movie";
 import { hideLoading, showLoading } from "../redux/loaderSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { message, Input, Divider, Row, Col } from "antd";
 import { CalendarOutlined } from "@ant-design/icons";
 import { DateTime } from "luxon";
 import { getAllTheatresByMovie } from "../api/show";
+import { setThreatres } from "../redux/theatresSlice";
 
 const SingleMovie = () => {
   const params = useParams();
@@ -14,7 +15,7 @@ const SingleMovie = () => {
   const navigate = useNavigate();
 
   const [movie, setMovie] = useState();
-  const [theatres, setTheatres] = useState([]);
+  const { theatres } = useSelector((state) => state.theatres);
   const [date, setDate] = useState(DateTime.now().toFormat("yyyy-MM-dd"));
 
   const getData = async () => {
@@ -38,7 +39,7 @@ const SingleMovie = () => {
       dispatch(showLoading());
       const response = await getAllTheatresByMovie({ movie: params.id, date });
       if (response.success) {
-        setTheatres(response.data);
+        dispatch(setThreatres(response.data));
       } else {
         message.error(response.message);
       }

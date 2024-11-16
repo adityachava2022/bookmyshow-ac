@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { hideLoading, showLoading } from "../../redux/loaderSlice";
 import { message, Table, Button } from "antd";
 import { getAllTheatres } from "../../api/theatre";
@@ -7,6 +7,7 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import DeleteTheatreModal from "./DeleteTheatreModal";
 import TheatreForm from "./TheatreForm";
 import ShowModal from "./ShowModal";
+import { setThreatres } from "../../redux/theatresSlice";
 
 const TheatreList = () => {
   const disptach = useDispatch();
@@ -14,7 +15,7 @@ const TheatreList = () => {
   const [selectedTheatre, setSelectedTheatre] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [formType, setFormType] = useState("add");
-  const [theatres, setTheatres] = useState(null);
+  const { theatres } = useSelector((state) => state.theatres);
   const [isShowModalOpen, setIsShowModalOpen] = useState(false);
 
   const getData = async () => {
@@ -22,10 +23,12 @@ const TheatreList = () => {
       disptach(showLoading());
       const response = await getAllTheatres();
       if (response.success) {
-        setTheatres(
-          response.data.map((item) => {
-            return { ...item, key: `theatre${item._id}` };
-          })
+        disptach(
+          setThreatres(
+            response.data.map((item) => {
+              return { ...item, key: `theatre${item._id}` };
+            })
+          )
         );
       }
     } catch (err) {

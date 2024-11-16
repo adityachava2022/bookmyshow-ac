@@ -19,12 +19,13 @@ import {
 } from "../../api/show";
 import { getAllMovies } from "../../api/movie";
 import { showLoading, hideLoading } from "../../redux/loaderSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   ArrowLeftOutlined,
   EditOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
+import { setMovies } from "../../redux/moviesSlice";
 
 const ShowModal = ({
   isShowModalOpen,
@@ -33,7 +34,7 @@ const ShowModal = ({
   setSelectedTheatre,
 }) => {
   const [shows, setShows] = useState([]);
-  const [movies, setMovies] = useState(null);
+  const { movies } = useSelector((state) => state.movies);
   const [view, setView] = useState("table");
   const [selectedShow, setSelectedShow] = useState(null);
   const dispatch = useDispatch();
@@ -43,7 +44,7 @@ const ShowModal = ({
       dispatch(showLoading());
       const movieResponse = await getAllMovies();
       if (movieResponse.success) {
-        setMovies(movieResponse.data);
+        dispatch(setMovies(movieResponse.data));
       } else {
         message.error(movieResponse.message);
       }

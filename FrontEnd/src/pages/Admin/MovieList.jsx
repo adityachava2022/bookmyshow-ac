@@ -1,5 +1,5 @@
 import { message, Table, Button } from "antd";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { hideLoading, showLoading } from "../../redux/loaderSlice";
 import { getAllMovies } from "../../api/movie";
 import React, { useEffect, useState } from "react";
@@ -7,9 +7,10 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { DateTime } from "luxon";
 import MovieForm from "./MovieForm";
 import DeleteMovieModal from "./DeleteMovieModal";
+import { setMovies } from "../../redux/moviesSlice";
 
 const MovieList = () => {
-  const [movies, setMovies] = useState([]);
+  const { movies } = useSelector((state) => state.movies);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null);
@@ -94,10 +95,12 @@ const MovieList = () => {
       dispatch(showLoading());
       const response = await getAllMovies();
       if (response.success) {
-        setMovies(
-          response.data.map((item) => {
-            return { ...item, key: `movie${item._id}` };
-          })
+        dispatch(
+          setMovies(
+            response.data.map((item) => {
+              return { ...item, key: `movie${item._id}` };
+            })
+          )
         );
       }
     } catch (error) {

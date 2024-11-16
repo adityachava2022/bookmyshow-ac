@@ -98,49 +98,6 @@ const BookShow = () => {
     );
   };
 
-  // const book = async (transactionId) => {
-  //   try {
-  //     dispatch(showLoading());
-  //     const response = await bookShow({
-  //       show: params.id,
-  //       transactionId,
-  //       seats: selectedSeats,
-  //       user: user._id,
-  //     });
-  //     if (response.success) {
-  //       message.success("Show Booking done!");
-  //       navigate("/profile");
-  //     } else {
-  //       message.error(response.message);
-  //     }
-  //   } catch (err) {
-  //     message.error(err.message);
-  //   } finally {
-  //     dispatch(hideLoading());
-  //   }
-  // };
-
-  // const onToken = async (token) => {
-  //   try {
-  //     dispatch(showLoading());
-  //     const response = await makePayment(
-  //       token,
-  //       selectedSeats.length * show.ticketPrice
-  //     );
-  //     if (response.success) {
-  //       message.success(response.message);
-  //       book(response.data);
-  //       console.log(response);
-  //     } else {
-  //       message.error(response.message);
-  //     }
-  //   } catch (err) {
-  //     message.error(err.message);
-  //   } finally {
-  //     dispatch(hideLoading());
-  //   }
-  // };
-
   const bookAndPay = async (token) => {
     try {
       dispatch(showLoading());

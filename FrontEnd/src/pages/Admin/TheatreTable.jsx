@@ -1,12 +1,13 @@
 import { Table, Button, message } from "antd";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { hideLoading, showLoading } from "../../redux/loaderSlice";
 import { getAllTheatresForAdmin, updateTheatre } from "../../api/theatre";
+import { setThreatres } from "../../redux/theatresSlice";
 
 const TheatreTable = () => {
   const dispatch = useDispatch();
-  const [theatres, setTheatres] = useState([]);
+  const { theatres } = useSelector((state) => state.theatres);
 
   const getData = async () => {
     try {
@@ -14,10 +15,12 @@ const TheatreTable = () => {
       const response = await getAllTheatresForAdmin();
       if (response.success) {
         const allTheatres = response.data;
-        setTheatres(
-          allTheatres.map(function (item) {
-            return { ...item, key: `theatre${item._id}` };
-          })
+        dispatch(
+          setThreatres(
+            allTheatres.map(function (item) {
+              return { ...item, key: `theatre${item._id}` };
+            })
+          )
         );
       }
     } catch (err) {

@@ -4,11 +4,12 @@ import { hideLoading, showLoading } from "../redux/loaderSlice";
 import { useNavigate } from "react-router-dom";
 import { SearchOutlined } from "@ant-design/icons";
 import { getAllMovies } from "../api/movie";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DateTime } from "luxon";
+import { setMovies } from "../redux/moviesSlice";
 
 const Home = () => {
-  const [movies, setMovies] = useState(null);
+  const { movies } = useSelector((state) => state.movies);
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const Home = () => {
       dispatch(showLoading());
       const response = await getAllMovies();
       if (response.success) {
-        setMovies(response.data);
+        dispatch(setMovies(response.data));
       } else {
         message.error(response.message);
       }
