@@ -1,5 +1,5 @@
 import { Col, Modal, Row, Form, Input, Select, Button, message } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 import { DateTime } from "luxon";
 import TextArea from "antd/es/input/TextArea";
 import { useDispatch } from "react-redux";
@@ -15,13 +15,18 @@ const MovieForm = ({
   formType,
 }) => {
   const dispatch = useDispatch();
+  const [form] = Form.useForm();
 
-  // TODO: convert this moment to luxon
-  if (selectedMovie) {
-    selectedMovie.releaseDate = DateTime.fromISO(
-      selectedMovie.releaseDate
-    ).toFormat("yyyy-MM-dd");
-  }
+  useEffect(() => {
+    if (selectedMovie?.releaseDate) {
+      const formattedReleaseDate = DateTime.fromISO(
+        selectedMovie.releaseDate
+      ).toFormat("yyyy-MM-dd");
+      form.setFieldsValue({
+        releaseDate: formattedReleaseDate, // Set formatted date to form
+      });
+    }
+  }, [selectedMovie, form]);
 
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -31,6 +36,10 @@ const MovieForm = ({
   const onFinish = async (values) => {
     try {
       dispatch(showLoading());
+      values.releaseDate = DateTime.fromFormat(
+        values.releaseDate,
+        "yyyy-MM-dd"
+      ).toISO();
       let response = null;
       if (formType === "edit") {
         response = await updateMovie({
@@ -64,7 +73,12 @@ const MovieForm = ({
       width={800}
       footer={null}
     >
-      <Form layout="vertical" initialValues={selectedMovie} onFinish={onFinish}>
+      <Form
+        form={form}
+        layout="vertical"
+        initialValues={selectedMovie}
+        onFinish={onFinish}
+      >
         <Row gutter={{ xs: 6, sm: 10, md: 12, lg: 16 }}>
           <Col span={24}>
             <Form.Item

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { hideLoading, showLoading } from "../../redux/loaderSlice";
 import { getAllTheatresForAdmin, updateTheatre } from "../../api/theatre";
-import { setThreatres } from "../../redux/theatresSlice";
+import { setTheatres } from "../../redux/theatresSlice";
 
 const TheatreTable = () => {
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ const TheatreTable = () => {
       if (response.success) {
         const allTheatres = response.data;
         dispatch(
-          setThreatres(
+          setTheatres(
             allTheatres.map(function (item) {
               return { ...item, key: `theatre${item._id}` };
             })

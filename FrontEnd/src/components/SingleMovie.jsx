@@ -7,7 +7,7 @@ import { message, Input, Divider, Row, Col } from "antd";
 import { CalendarOutlined } from "@ant-design/icons";
 import { DateTime } from "luxon";
 import { getAllTheatresByMovie } from "../api/show";
-import { setThreatres } from "../redux/theatresSlice";
+import { setTheatres } from "../redux/theatresSlice";
 
 const SingleMovie = () => {
   const params = useParams();
@@ -39,7 +39,7 @@ const SingleMovie = () => {
       dispatch(showLoading());
       const response = await getAllTheatresByMovie({ movie: params.id, date });
       if (response.success) {
-        dispatch(setThreatres(response.data));
+        dispatch(setTheatres(response.data));
       } else {
         message.error(response.message);
       }
@@ -112,6 +112,11 @@ const SingleMovie = () => {
         <div className="theatre-wrapper mt-3 pt-3">
           <h2>Theatres</h2>
           {theatres.map((theatre) => {
+            const sortedShows = [...theatre.shows].sort(
+              (a, b) =>
+                DateTime.fromFormat(a.time, "HH:mm").toMillis() -
+                DateTime.fromFormat(b.time, "HH:mm").toMillis()
+            );
             return (
               <div key={theatre._id}>
                 <Row gutter={24} key={theatre._id}>
@@ -121,27 +126,21 @@ const SingleMovie = () => {
                   </Col>
                   <Col xs={{ span: 24 }} lg={{ span: 16 }}>
                     <ul className="show-ul">
-                      {theatre.shows
-                        .sort(
-                          (a, b) =>
-                            DateTime.fromFormat(a.time, "HH:mm") -
-                            DateTime.fromFormat(b.time, "HH:mm")
-                        )
-                        .map((singleShow) => {
-                          return (
-                            <li
-                              key={singleShow._id}
-                              onClick={() =>
-                                navigate(`/book-show/${singleShow._id}`)
-                              }
-                            >
-                              {DateTime.fromFormat(
-                                singleShow.time,
-                                "HH:mm"
-                              ).toFormat("hh:mm a")}
-                            </li>
-                          );
-                        })}
+                      {sortedShows.map((singleShow) => {
+                        return (
+                          <li
+                            key={singleShow._id}
+                            onClick={() =>
+                              navigate(`/book-show/${singleShow._id}`)
+                            }
+                          >
+                            {DateTime.fromFormat(
+                              singleShow.time,
+                              "HH:mm"
+                            ).toFormat("hh:mm a")}
+                          </li>
+                        );
+                      })}
                     </ul>
                   </Col>
                 </Row>

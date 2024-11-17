@@ -1,16 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const threatresSlice = createSlice({
-  name: "threatre",
+const theatresSlice = createSlice({
+  name: "theatres",
   initialState: {
-    threatres: [],
+    theatres: [],
   },
   reducers: {
-    setThreatres: (state, action) => {
-      state.threatres = action.payload;
+    setTheatres: (state, action) => {
+      state.theatres = action.payload;
     },
   },
 });
 
-export const { setThreatres } = threatresSlice.actions;
-export default threatresSlice.reducer;
+export const { setTheatres } = theatresSlice.actions;
+export default theatresSlice.reducer;

@@ -7,10 +7,10 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import DeleteTheatreModal from "./DeleteTheatreModal";
 import TheatreForm from "./TheatreForm";
 import ShowModal from "./ShowModal";
-import { setThreatres } from "../../redux/theatresSlice";
+import { setTheatres } from "../../redux/theatresSlice";
 
 const TheatreList = () => {
-  const disptach = useDispatch();
+  const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTheatre, setSelectedTheatre] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -20,11 +20,11 @@ const TheatreList = () => {
 
   const getData = async () => {
     try {
-      disptach(showLoading());
+      dispatch(showLoading());
       const response = await getAllTheatres();
       if (response.success) {
-        disptach(
-          setThreatres(
+        dispatch(
+          setTheatres(
             response.data.map((item) => {
               return { ...item, key: `theatre${item._id}` };
             })
@@ -34,7 +34,7 @@ const TheatreList = () => {
     } catch (err) {
       message.error(err);
     } finally {
-      disptach(hideLoading());
+      dispatch(hideLoading());
     }
   };
 
