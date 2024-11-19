@@ -3,11 +3,9 @@
 2. clone the project
 3. In the BackEnd folder, create .env file
    and add all the environment variables.
-5. from root folder, run the following
-   cd FrontEnd && npm install
-6. come back to root folder and run the following:
-   cd BackEnd && npm install
-7. start the server
+4. run the command to build the project
+   cd FrontEnd && npm i && npm run build && cd ../BackEnd && npm i
+5. command to start the server
    npm run start
 
 # bookmyshow-ac
