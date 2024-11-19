@@ -1,3 +1,15 @@
+# Installation guide
+1. make sure that node.js 20.14.0 or above is installed in the system.
+2. clone the project
+3. In the BackEnd folder, create .env file
+   and add all the environment variables.
+5. from root folder, run the following
+   cd FrontEnd && npm install
+6. come back to root folder and run the following:
+   cd BackEnd && npm install
+7. start the server
+   npm run start
+
 # bookmyshow-ac
 
 book my show
@@ -31,7 +43,7 @@ GMAIL_APP_PASSWORD=<gmail_app_password>
 
 JWT_TOKEN_EXPIRY=1d
 
-sample values for environment variables:
+# sample values for environment variables:
 PORT=8000
 MONGODB_URL=mongodb+srv://adityachava1:TjP4kkFXe6LzJNvw@cluster0bms.6ij8a.mongodb.net/bookmyshow?retryWrites=true&w=majority&appName=cluster0bms
 STRIPE_KEY=sk_test_51QClPPGMI6PH9u9vhCtFysJ466FPfApdwjOvwTGG6ehlYcCI8u2ip3Dpuwss5xEomQLzQwZmENJQfMAkTKcnjSBL005dDoV7Kt
