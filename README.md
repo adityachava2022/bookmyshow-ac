@@ -6,7 +6,7 @@
 4. run the command to build the project
    cd FrontEnd && npm i && npm run build && cd ../BackEnd && npm i
 5. command to start the server
-   npm run start
+   cd BackEnd && npm run start
 
 # bookmyshow-ac
 
